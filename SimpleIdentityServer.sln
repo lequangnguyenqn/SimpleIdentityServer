@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35431.28
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleIdentityServer", "SimpleIdentityServer\SimpleIdentityServer.csproj", "{EB29F3D0-9424-4AC5-B070-5A44065CFAAC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EB29F3D0-9424-4AC5-B070-5A44065CFAAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB29F3D0-9424-4AC5-B070-5A44065CFAAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB29F3D0-9424-4AC5-B070-5A44065CFAAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB29F3D0-9424-4AC5-B070-5A44065CFAAC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4F7C62BF-7795-4ABC-8E3D-4A5DB2E57E33}
+	EndGlobalSection
+EndGlobal
