@@ -85,14 +85,14 @@ export default function ClientExample() {
             <code>here</code>
           </CustomLink>
         </p>
-        <div className="flex flex-col">
+        {/* <div className="flex flex-col">
           <Button
             disabled={!session?.accessToken}
             onClick={makeRequestWithToken}
           >
             Make API Request
           </Button>
-        </div>
+        </div> */}
         <pre>{apiResponse}</pre>
         <p className="italic">
           Note: This example only works when using the Keycloak provider.
