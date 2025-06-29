@@ -21,5 +21,19 @@ namespace SimpleIdentityServer.Services
         {
             return JsonWebKeyConverter.ConvertFromRSASecurityKey(Key);
         }
+
+        public static TokenValidationParameters GetTokenValidationParameters()
+        {
+            return new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = "http://localhost:5295",
+                ValidateAudience = false,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = Key,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.FromMinutes(1)
+            };
+        }
     }
 }
