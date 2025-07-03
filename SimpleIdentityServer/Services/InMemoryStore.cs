@@ -11,25 +11,19 @@ namespace SimpleIdentityServer.Services
 
         public static Dictionary<string, string> Clients = new()
         {
-            { "client1", "https://localhost:5002/callback" },
-            { "machine_client", null }
+            { "aspnetcore_client", "http://localhost:5006/home/callback" },
+            { "nextjs_client", "http://localhost:3000/api/auth/callback/simple-identity-server" }
         };
 
         public static Dictionary<string, string> ClientSecrets = new()
         {
-            { "machine_client", "supersecret123" }
+            { "aspnetcore_client", "supersecret123" },
+            { "nextjs_client", "supersecret123" }
         };
 
         public static List<string> ValidScopes = new() { "profile", "email" };
 
-        public static Dictionary<string, Dictionary<string, string>> Users = new()
-        {
-            { "test", new Dictionary<string, string> {
-                { "sub", "user1" },
-                { "name", "Test User" },
-                { "email", "test@example.com" }
-            }}
-        };
+        public static Dictionary<string, (string codeChallenge, string? codeChallengeMethod)> CodeChallenges = new();
 
         public static string GenerateCode(string userId)
         {
@@ -77,6 +71,20 @@ namespace SimpleIdentityServer.Services
                 if (s == "email") claims.Add(new Claim("email", user.Email));
             }
             return claims;
+        }
+
+        public static void StoreCodeChallenge(string code, string codeChallenge, string? codeChallengeMethod)
+        {
+            CodeChallenges[code] = (codeChallenge, codeChallengeMethod);
+        }
+
+        public static (string codeChallenge, string? codeChallengeMethod)? GetCodeChallenge(string code)
+        {
+            if (CodeChallenges.TryGetValue(code, out var value))
+            {
+                return value;
+            }
+            return null;
         }
     }
 }

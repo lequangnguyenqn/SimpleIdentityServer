@@ -14,8 +14,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       authorization: "http://localhost:5295/connect/authorize",
       token: "http://localhost:5295/connect/token",
       userinfo: "http://localhost:5295/connect/userinfo",
-      clientId: "client1", // Client ID for authentication from environment variable
-      clientSecret: "IEvgIBADANLgkqhkiG9w0BAQEFAASCB", // Client Secret for authentication from environment variable
+      clientId: "nextjs_client", // Client ID for authentication from environment variable
+      clientSecret: "supersecret123", // Client Secret for authentication from environment variable
       checks: ["pkce", "state"], // Security checks to perform
       profile(profile) {
         // Log essential information when a user logs in
@@ -26,6 +26,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           name: `${profile.given_name} ${profile.family_name}`, // Full name from given and family names
           email: profile.email, // User email
         };
+      },
+      client: {
+        token_endpoint_auth_method: "client_secret_post", // LOOK HERE!!!
       }
     },
   ],

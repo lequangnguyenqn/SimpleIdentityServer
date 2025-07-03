@@ -15,9 +15,9 @@ namespace SimpleIdentityServer.Controllers
             return Ok(new
             {
                 issuer = baseUrl,
-                authorization_endpoint = $"{baseUrl}/authorize",
-                token_endpoint = $"{baseUrl}/token",
-                userinfo_endpoint = $"{baseUrl}/userinfo",
+                authorization_endpoint = $"{baseUrl}/connect/authorize",
+                token_endpoint = $"{baseUrl}/connect/token",
+                userinfo_endpoint = $"{baseUrl}/connect/userinfo",
                 jwks_uri = $"{baseUrl}/.well-known/jwks.json",
                 response_types_supported = new[] { "code" },
                 subject_types_supported = new[] { "public" },

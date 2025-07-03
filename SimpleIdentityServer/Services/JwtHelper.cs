@@ -7,13 +7,13 @@ namespace SimpleIdentityServer.Services
 {
     public static class JwtHelper
     {
-        public static string GenerateToken(string userId, IEnumerable<Claim> claims, int expiresMinutes = 15)
+        public static string GenerateToken(string client_id, IEnumerable<Claim> claims, int expiresMinutes = 15)
         {
             var creds = RsaKeyService.GetSigningCredentials();
 
             var token = new JwtSecurityToken(
-                issuer: "https://localhost:5001",
-                audience: "client1",
+                issuer: "http://localhost:5295",
+                audience: client_id,
                 claims: claims,
                 expires: DateTime.UtcNow.AddMinutes(expiresMinutes),
                 signingCredentials: creds);
@@ -30,8 +30,9 @@ namespace SimpleIdentityServer.Services
                 var principal = tokenHandler.ValidateToken(token, validationParameters, out var validatedToken);
                 var sub = principal.FindFirst("sub")?.Value;
                 if (string.IsNullOrEmpty(sub)) return null;
-                // Find user by sub claim in the Users dictionary
-                return InMemoryStore.Users.Values.FirstOrDefault(u => u.ContainsKey("sub") && u["sub"] == sub);
+                return principal.Claims
+                    .Select(c => new KeyValuePair<string, string>(c.Type, c.Value))
+                    .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             }
             catch
             {
