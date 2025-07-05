@@ -1,17 +1,10 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using SimpleIdentityServer.Data;
 using Microsoft.OpenApi.Models; // Add this using directive for Swagger support
+using SimpleIdentityServer.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddAuthorization();
-builder.Services.AddAuthentication("cookie")
-    .AddCookie("cookie", options =>
-    {
-        options.LoginPath = "/Account/Login";
-        options.LogoutPath = "/Account/Logout";
-        options.AccessDeniedPath = "/Account/AccessDenied";
-    });
 
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -29,6 +22,34 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "SimpleIdentityServer API", Version = "v1" });
 });
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // Cookie settings
+    //options.Cookie.HttpOnly = true;
+    //options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+    options.LoginPath = "/Account/Login";
+    options.LogoutPath = "/Account/Logout";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+    //options.SlidingExpiration = true;
+});
+
+builder.Services.AddAuthentication()
+   .AddGoogle(options =>
+   {
+       IConfigurationSection googleAuthNSection =
+       builder.Configuration.GetSection("Authentication:Google");
+       options.ClientId = googleAuthNSection["ClientId"];
+       options.ClientSecret = googleAuthNSection["ClientSecret"];
+   })
+   .AddFacebook(options =>
+   {
+      IConfigurationSection FBAuthNSection =
+      builder.Configuration.GetSection("Authentication:Facebook");
+      options.ClientId = FBAuthNSection["ClientId"];
+      options.ClientSecret = FBAuthNSection["ClientSecret"];
+   });
 
 var app = builder.Build();
 

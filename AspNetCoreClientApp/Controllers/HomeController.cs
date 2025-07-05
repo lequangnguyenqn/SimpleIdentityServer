@@ -15,15 +15,15 @@ namespace ClientApp.Controllers
         public IActionResult Login()
         {
             var state = Guid.NewGuid().ToString("N");
-            TempData["state"] = state;
+            HttpContext.Session.SetString("state", state);
             var redirectUri = "http://localhost:5006/home/callback";
 
             // PKCE: generate code_verifier and code_challenge
             var codeVerifier = GenerateCodeVerifier();
             var codeChallenge = GenerateCodeChallenge(codeVerifier);
-            TempData["code_verifier"] = codeVerifier;
+            HttpContext.Session.SetString("code_verifier", codeVerifier);
 
-            var authUrl = $"http://localhost:5295/connect/authorize?response_type=code&client_id=aspnetcore_client&scrope={HttpUtility.UrlEncode("profile email")}&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&state={state}&code_challenge={codeChallenge}&code_challenge_method=S256";
+            var authUrl = $"http://localhost:5295/connect/authorize?response_type=code&client_id=aspnetcore_client&scope={HttpUtility.UrlEncode("profile email")}&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&state={state}&code_challenge={codeChallenge}&code_challenge_method=S256";
             return Redirect(authUrl);
         }
 
@@ -31,8 +31,8 @@ namespace ClientApp.Controllers
             string state,
             string scope)
         {
-            var codeVerifier = TempData["code_verifier"] as string;
-            var state_verifier = TempData["state"] as string;
+            var codeVerifier = HttpContext.Session.GetString("code_verifier");
+            var state_verifier = HttpContext.Session.GetString("state");
             if (!string.Equals(state_verifier, state, StringComparison.OrdinalIgnoreCase))
             {
                 ViewData["Token"] = "State mismatch, possible CSRF attack.";
