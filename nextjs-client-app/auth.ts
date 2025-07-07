@@ -23,7 +23,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         return {
           id: profile.sub, // User ID from the profile
           username: profile.sub?.toLowerCase(), // Username (converted to lowercase)
-          name: `${profile.given_name} ${profile.family_name}`, // Full name from given and family names
+          name: `${profile.name}`, // Full name from given and family names
           email: profile.email, // User email
         };
       },

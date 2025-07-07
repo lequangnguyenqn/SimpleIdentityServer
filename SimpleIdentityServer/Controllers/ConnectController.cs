@@ -36,7 +36,7 @@ namespace SimpleIdentityServer.Controllers
 
             // Generate code and store code_challenge and method with it
             var code = InMemoryStore.GenerateCode(User.Identity.Name);
-            InMemoryStore.StoreCodeChallenge(code, code_challenge, code_challenge_method);
+            InMemoryStore.StoreCodeChallenge(code, scope, code_challenge, code_challenge_method);
 
             var redirect = $"{redirect_uri}?code={code}&state={state}";
             return Redirect(redirect);
@@ -50,10 +50,10 @@ namespace SimpleIdentityServer.Controllers
                            [FromForm] string? client_id,
                            [FromForm] string? client_secret,
                            [FromForm] string? redirect_uri,
-                           [FromForm] string? scope,
                            [FromForm] string? code_verifier)
         {
             string? userName = null;
+            string scope = null;
 
             // Check client_id
             if (!string.IsNullOrEmpty(client_id) && !InMemoryStore.Clients.ContainsKey(client_id))
@@ -77,7 +77,7 @@ namespace SimpleIdentityServer.Controllers
                 var codeChallengeInfo = InMemoryStore.GetCodeChallenge(code);
                 if (codeChallengeInfo != null)
                 {
-                    var (codeChallenge, codeChallengeMethod) = codeChallengeInfo.Value;
+                    (scope, var codeChallenge, var codeChallengeMethod) = codeChallengeInfo.Value;
                     if (string.IsNullOrEmpty(code_verifier))
                         return BadRequest("Missing code_verifier for PKCE");
                     bool valid = false;
@@ -104,7 +104,7 @@ namespace SimpleIdentityServer.Controllers
             }
             else if (grant_type == "refresh_token" && refresh_token != null)
             {
-                userName = InMemoryStore.GetUserByRefreshToken(refresh_token);
+                (scope, userName) = InMemoryStore.GetUserByRefreshToken(refresh_token).Value;
             }
 
             if (userName == null) return BadRequest("Invalid credentials");
@@ -113,7 +113,7 @@ namespace SimpleIdentityServer.Controllers
             var claims = InMemoryStore.GetUserClaims(user, scope);
 
             var token = JwtHelper.GenerateToken(client_id, claims);
-            var newRefreshToken = InMemoryStore.GenerateRefreshToken(userName);
+            var newRefreshToken = InMemoryStore.GenerateRefreshToken(scope, userName);
 
             return Ok(new
             {

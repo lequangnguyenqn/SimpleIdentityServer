@@ -33,7 +33,7 @@ export default async function UserButton() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56" align="end" forceMount>
-          <DropdownMenuLabel className="font-normal">
+          {/* <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium leading-none">
                 {session.user.name}
@@ -42,7 +42,7 @@ export default async function UserButton() {
                 {session.user.email}
               </p>
             </div>
-          </DropdownMenuLabel>
+          </DropdownMenuLabel> */}
           <DropdownMenuItem>
             <SignOut />
           </DropdownMenuItem>

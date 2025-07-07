@@ -29,9 +29,12 @@ namespace SimpleIdentityServer.Services
             {
                 var principal = tokenHandler.ValidateToken(token, validationParameters, out var validatedToken);
                 var sub = principal.FindFirst("sub")?.Value;
-                if (string.IsNullOrEmpty(sub)) return null;
                 return principal.Claims
-                    .Select(c => new KeyValuePair<string, string>(c.Type, c.Value))
+                    .Select(c => new KeyValuePair<string, string>(
+                        c.Type == ClaimTypes.Email ? "email" :
+                        c.Type == ClaimTypes.NameIdentifier ? "sub" :
+                        c.Type,
+                        c.Value))
                     .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             }
             catch

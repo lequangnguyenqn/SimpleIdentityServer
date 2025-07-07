@@ -45,7 +45,6 @@ namespace ClientApp.Controllers
                 new KeyValuePair<string, string>("redirect_uri", "http://localhost:5006/home/callback"),
                 new KeyValuePair<string, string>("client_id", "aspnetcore_client"),
                 new KeyValuePair<string, string>("client_secret", "supersecret123"),
-                new KeyValuePair<string, string>("scope", "profile email"),
                 new KeyValuePair<string, string>("code_verifier", codeVerifier ?? "")
             });
 

@@ -7,7 +7,7 @@ namespace SimpleIdentityServer.Services
     public static class InMemoryStore
     {
         public static Dictionary<string, string> AuthorizationCodes = new();
-        public static Dictionary<string, string> RefreshTokens = new();
+        public static Dictionary<string, (string scope, string user)> RefreshTokens = new();
 
         public static Dictionary<string, string> Clients = new()
         {
@@ -23,7 +23,7 @@ namespace SimpleIdentityServer.Services
 
         public static List<string> ValidScopes = new() { "profile", "email" };
 
-        public static Dictionary<string, (string codeChallenge, string? codeChallengeMethod)> CodeChallenges = new();
+        public static Dictionary<string, (string scope, string codeChallenge, string? codeChallengeMethod)> CodeChallenges = new();
 
         public static string GenerateCode(string userId)
         {
@@ -43,17 +43,17 @@ namespace SimpleIdentityServer.Services
             return null;
         }
 
-        public static string GenerateRefreshToken(string userId)
+        public static string GenerateRefreshToken(string scope, string userId)
         {
             var token = Guid.NewGuid().ToString("N");
-            RefreshTokens[token] = userId;
+            RefreshTokens[token] = (scope, userId);
             return token;
         }
 
-        public static string? GetUserByRefreshToken(string token)
+        public static (string scope, string user)? GetUserByRefreshToken(string token)
         {
-            RefreshTokens.TryGetValue(token, out var user);
-            return user;
+            RefreshTokens.TryGetValue(token, out var value);
+            return value;
         }
 
         public static IEnumerable<Claim> GetUserClaims(User user, string scope)
@@ -73,12 +73,12 @@ namespace SimpleIdentityServer.Services
             return claims;
         }
 
-        public static void StoreCodeChallenge(string code, string codeChallenge, string? codeChallengeMethod)
+        public static void StoreCodeChallenge(string code, string scope, string codeChallenge, string? codeChallengeMethod)
         {
-            CodeChallenges[code] = (codeChallenge, codeChallengeMethod);
+            CodeChallenges[code] = (scope, codeChallenge, codeChallengeMethod);
         }
 
-        public static (string codeChallenge, string? codeChallengeMethod)? GetCodeChallenge(string code)
+        public static (string scope, string codeChallenge, string? codeChallengeMethod)? GetCodeChallenge(string code)
         {
             if (CodeChallenges.TryGetValue(code, out var value))
             {
