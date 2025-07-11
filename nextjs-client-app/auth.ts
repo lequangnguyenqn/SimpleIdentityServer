@@ -11,9 +11,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       name: 'Simple Identity Server', // Name of the provider
       type: 'oauth', // Provider type
       issuer: "http://localhost:5295",
-      authorization: "http://localhost:5295/connect/authorize",
-      token: "http://localhost:5295/connect/token",
-      userinfo: "http://localhost:5295/connect/userinfo",
+      authorization: "http://localhost:5295/oauth/authorize",
+      token: "http://localhost:5295/oauth/token",
+      userinfo: "http://localhost:5295/oauth/userinfo",
       clientId: "nextjs_client", // Client ID for authentication from environment variable
       clientSecret: "supersecret123", // Client Secret for authentication from environment variable
       checks: ["pkce", "state"], // Security checks to perform

@@ -23,7 +23,7 @@ namespace ClientApp.Controllers
             var codeChallenge = GenerateCodeChallenge(codeVerifier);
             HttpContext.Session.SetString("code_verifier", codeVerifier);
 
-            var authUrl = $"http://localhost:5295/connect/authorize?response_type=code&client_id=aspnetcore_client&scope={HttpUtility.UrlEncode("profile email")}&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&state={state}&code_challenge={codeChallenge}&code_challenge_method=S256";
+            var authUrl = $"http://localhost:5295/oauth/authorize?response_type=code&client_id=aspnetcore_client&scope={HttpUtility.UrlEncode("profile email")}&redirect_uri={HttpUtility.UrlEncode(redirectUri)}&state={state}&code_challenge={codeChallenge}&code_challenge_method=S256";
             return Redirect(authUrl);
         }
 
@@ -49,7 +49,7 @@ namespace ClientApp.Controllers
             });
 
             var client = new HttpClient();
-            var response = await client.PostAsync("http://localhost:5295/connect/token", tokenRequest);
+            var response = await client.PostAsync("http://localhost:5295/oauth/token", tokenRequest);
             var content = await response.Content.ReadAsStringAsync();
 
             ViewData["Token"] = content;

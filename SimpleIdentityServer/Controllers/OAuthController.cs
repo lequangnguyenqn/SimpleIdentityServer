@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace SimpleIdentityServer.Controllers
 {
     [ApiController]
-    [Route("connect")]
+    [Route("oauth")]
     public class ConnectController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
