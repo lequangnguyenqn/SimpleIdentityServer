@@ -1,7 +1,8 @@
 ## Install The EF Core (CLI) tools
 ``dotnet tool install --global dotnet-ef``
 
-## Run Entity Framework Core Migrations
-``dotnet ef migrations add InitialCreate``
-
+## Create your database and schema if not exist or updates your database to the latest migration
 ``dotnet ef database update``
+
+## Example create your first migration
+``dotnet ef migrations add InitialCreate``

@@ -1,4 +1,3 @@
-import { request } from "http";
 import NextAuth from "next-auth"
 import "next-auth/jwt"
 

@@ -1,0 +1,53 @@
+services:
+  identityserver:
+    build:
+      context: ./SimpleIdentityServer
+      dockerfile: Dockerfile
+    image: simpleidentityserver:latest
+    container_name: identityserver
+    ports:
+      - "5295:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=mssql;Database=SimpleIdentityServer;User=sa;Password=Your_password123;TrustServerCertificate=True
+    depends_on:
+      - mssql
+  aspnet-client-app:
+    build:
+      context: ./AspNetCoreClientApp
+      dockerfile: Dockerfile
+    image: aspnetcoreclientapp:latest
+    container_name: aspnet-client-app
+    ports:
+      - "5006:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+  nextjs-client-app:
+    build:
+      context: ./nextjs-client-app
+      dockerfile: Dockerfile.prod
+    image: nextjs-client-app:latest
+    container_name: nextjs-client-app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./nextjs-client-app/src:/app/src
+      - ./nextjs-client-app/public:/app/public
+    environment:
+      - NODE_ENV=development
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: mssql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Your_password123
+      - MSSQL_PID=Developer
+    ports:
+      - "14331:1433"
+    volumes:
+      - mssql_data:/var/opt/mssql
+    restart: unless-stopped
+
+volumes:
+  mssql_data:
