@@ -7,6 +7,12 @@ namespace ClientApp.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly string _identityServerUrl;
+
+        public HomeController(IConfiguration configuration)
+        {
+            _identityServerUrl = configuration["IdentityServerUrl"] ?? "http://localhost:5295";
+        }
         public IActionResult Index()
         {
             return View();
@@ -49,7 +55,7 @@ namespace ClientApp.Controllers
             });
 
             var client = new HttpClient();
-            var response = await client.PostAsync("http://localhost:5295/oauth/token", tokenRequest);
+            var response = await client.PostAsync($"{_identityServerUrl}/oauth/token", tokenRequest);
             var content = await response.Content.ReadAsStringAsync();
 
             ViewData["Token"] = content;
