@@ -31,9 +31,6 @@ services:
     container_name: nextjs-client-app
     ports:
       - "3000:3000"
-    volumes:
-      - ./nextjs-client-app/src:/app/src
-      - ./nextjs-client-app/public:/app/public
     environment:
       - NODE_ENV=development
 

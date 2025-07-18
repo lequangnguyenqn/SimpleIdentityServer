@@ -2,11 +2,12 @@ services:
   identityserver:
     build:
       context: ./SimpleIdentityServer
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
+      target: debug
     image: simpleidentityserver:latest
     container_name: identityserver
     ports:
-      - "5295:8080"
+      - "5295:5295"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=mssql;Database=SimpleIdentityServer;User=sa;Password=Your_password123;TrustServerCertificate=True
