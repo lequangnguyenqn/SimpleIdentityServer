@@ -1,7 +1,8 @@
+"use server"
 import { signIn, signOut } from "auth"
 import { Button } from "./ui/button"
 
-export function SignIn({
+export async function SignIn({
   provider,
   ...props
 }: { provider?: string } & React.ComponentPropsWithRef<typeof Button>) {
@@ -17,7 +18,7 @@ export function SignIn({
   )
 }
 
-export function SignOut(props: React.ComponentPropsWithRef<typeof Button>) {
+export async function SignOut(props: React.ComponentPropsWithRef<typeof Button>) {
   return (
     <form
       className="w-full"
