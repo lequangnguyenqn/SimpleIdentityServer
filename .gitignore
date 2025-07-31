@@ -55,3 +55,18 @@ nunit-*.xml
 
 # Visual Studio 2015/2017 cache/options directory
 .vs
+
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/

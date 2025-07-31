@@ -1,0 +1,34 @@
+# Python-specific files and directories
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-wheel-metadata/
+.tox/
+.coverage
+.mypy_cache/
+.pytest_cache/
+htmlcov/
+dist/
+build/
+*.egg-info/
+*.egg
+
+# Editor/IDE specific files
+.vscode/
+.idea/
+*.swp
+*.bak
+*~
+
+# Version control files
+.git/
+.gitignore
+
+# Operating system specific files
+.DS_Store
+Thumbs.db

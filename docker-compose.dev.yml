@@ -38,6 +38,18 @@ services:
     environment:
       - NODE_ENV=development
 
+  fastapi-backend:
+    build:
+      context: ./fastapi-backend
+      dockerfile: Dockerfile.dev
+    image: fastapi-backend:latest
+    container_name: fastapi-backend
+    volumes:
+      - ./fastapi-backend/src/:/app/src
+    ports:
+      - 8000:8000
+      - 5678:5678
+
   mssql:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: mssql
